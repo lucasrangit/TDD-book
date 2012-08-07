@@ -71,6 +71,28 @@ TEST(sprintf, InsertString)
 }
 #endif  
 
+TEST(sprintf, StringWithSpace)
+{
+    expect("space ");
+    given(sprintf(output, "space "));
+}
+
+#pragma GCC diagnostic ignored "-Wformat-zero-length"
+TEST(sprintf, EmptyString)
+{
+//  TEST_FAIL_MESSAGE(__func__);
+  expect("");
+  given(sprintf(output, ""));
+}
+#pragma GCC diagnostic warning "-Wformat-zero-length"
+
+TEST(sprintf, StringWithHexFormat)
+{
+  int test = 255;
+  expect("0xff");
+  given(sprintf(output, "0x%x", test));
+}
+
 /* to run this also change in SprintfTestRunner.c */
 #if 0 
 TEST(sprintf, NoFormatOperations)
