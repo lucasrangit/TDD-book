@@ -32,9 +32,7 @@
 
 TEST_GROUP(sprintf);
 
-//static char output[100];
 static char *output = NULL;
-//static char *output_new = NULL;
 static const char *expected;
 enum { MIN_OUTPUT_DIM=(2 * sizeof(char)) };
 
@@ -52,7 +50,7 @@ TEST_TEAR_DOWN(sprintf)
 
 static void expect(const char * s)
 {
-	int length = strlen(s)+2; // string + terminator + overflow detection
+	int length = strlen(s) + 2; // string + overflow detection + null terminator
 
 	if (MIN_OUTPUT_DIM < length)
 	{
