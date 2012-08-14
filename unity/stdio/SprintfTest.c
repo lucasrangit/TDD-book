@@ -27,25 +27,44 @@
 
 #include "unity_fixture.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <memory.h>
 
 TEST_GROUP(sprintf);
 
-static char output[100];
-static const char * expected;
+//static char output[100];
+static char *output = NULL;
+//static char *output_new = NULL;
+static const char *expected;
+enum { MIN_OUTPUT_DIM=(2 * sizeof(char)) };
 
 TEST_SETUP(sprintf)
 {
-    memset(output, 0xaa, sizeof output);
-    expected = "";
+	output = (char *)malloc(MIN_OUTPUT_DIM);
+	memset(output, 0xaa, MIN_OUTPUT_DIM);
+	expected = "";
 }
 
 TEST_TEAR_DOWN(sprintf)
 {
+    free(output);
 }
 
 static void expect(const char * s)
 {
+	int length = strlen(s)+2; // string + terminator + overflow detection
+
+	if (MIN_OUTPUT_DIM < length)
+	{
+		char *output_new = realloc(output, length);
+		if (output_new)
+		{
+			output = output_new;
+			memset(output, 0xaa, length);
+			expected = "";
+		}
+	}
+
     expected = s;
 }
 
@@ -80,7 +99,7 @@ TEST(sprintf, StringWithSpace)
 #pragma GCC diagnostic ignored "-Wformat-zero-length"
 TEST(sprintf, EmptyString)
 {
-//  TEST_FAIL_MESSAGE(__func__);
+  //TEST_FAIL_MESSAGE(__func__);
   expect("");
   given(sprintf(output, ""));
 }
