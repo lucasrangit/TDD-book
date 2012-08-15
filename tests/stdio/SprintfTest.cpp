@@ -28,18 +28,34 @@ extern "C"
 //START: testGroup
 TEST_GROUP(sprintf)
 {
-    char output[100];
+    char *output;
     const char * expected;
+    enum { MIN_OUTPUT_DIM = (2 * sizeof(char)) };
     void setup()
     {
-        memset(output, 0xaa, sizeof output);
+        output = (char *)malloc(MIN_OUTPUT_DIM);
+        memset(output, 0xaa, MIN_OUTPUT_DIM);
         expected = "";
     }
     void teardown()
     {
+    	free(output);
     }
     void expect(const char * s)
     {
+    	int length = strlen(s) + 2; // string + overflow detection + null terminator
+
+    	if (MIN_OUTPUT_DIM < length)
+    	{
+    		char *output_new = (char *)realloc(output, length);
+    		if (output_new)
+    		{
+    			output = output_new;
+    			memset(output, 0xaa, length);
+    			expected = "";
+    		}
+    	}
+
         expected = s;
     }
     void given(int charsWritten)
@@ -63,6 +79,28 @@ TEST(sprintf, InsertString)
     expect("Hello World\n");
     given(sprintf(output, "Hello %s\n", "World"));
 }
+
+TEST(sprintf, StringWithSpace)
+{
+    expect("space ");
+    given(sprintf(output, "space "));
+}
+
+TEST(sprintf, EmptyString)
+{
+	expect("");
+#pragma GCC diagnostic ignored "-Wformat-zero-length"
+	given(sprintf(output, ""));
+#pragma GCC diagnostic warning "-Wformat-zero-length"
+}
+
+TEST(sprintf, StringWithHexFormat)
+{
+  int test = 255;
+  expect("0xff");
+  given(sprintf(output, "0x%x", test));
+}
+
 //END: RefactoredTests
 
 #else //START: Duplication
