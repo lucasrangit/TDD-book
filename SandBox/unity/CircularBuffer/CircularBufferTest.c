@@ -25,14 +25,21 @@
 /*- ------------------------------------------------------------------ -*/
 
 #include "unity_fixture.h"
+#include "CircularBuffer.h"
 
-static void RunAllTests(void)
+#include "unity_fixture.h"
+
+TEST_GROUP(CircularBuffer);
+
+TEST_SETUP(CircularBuffer)
 {
-    RUN_TEST_GROUP(LedDriver);
-    RUN_TEST_GROUP(CircularBuffer);
 }
 
-int main(int ac, char* av[])
+TEST_TEAR_DOWN(CircularBuffer)
 {
-    return UnityMain(ac, av, RunAllTests);
+}
+
+TEST(CircularBuffer, StartHere)
+{
+    TEST_FAIL_MESSAGE("Start here");
 }

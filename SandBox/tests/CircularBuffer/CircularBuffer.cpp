@@ -18,26 +18,26 @@
 
 extern "C"
 {
-#include "LedDriver.h"
+#include "CircularBuffer.h"
 }
 
 #include "CppUTest/TestHarness.h"
 
-TEST_GROUP(LedDriver)
+TEST_GROUP(CircularBuffer)
 {
     void setup()
     {
-      LedDriver_Create();
+      CircularBuffer_Create();
     }
 
     void teardown()
     {
-       LedDriver_Destroy();
+       CircularBuffer_Destroy();
     }
 };
 
-TEST(LedDriver, Create)
+TEST(CircularBuffer, Create)
 {
-  //FAIL("Start here");
+  FAIL("Start here");
 }
 

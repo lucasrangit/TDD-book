@@ -24,15 +24,10 @@
 /*-    www.renaissancesoftware.net james@renaissancesoftware.net       -*/
 /*- ------------------------------------------------------------------ -*/
 
-#include "unity_fixture.h"
+#ifndef D_CircularBuffer_H
+#define D_CircularBuffer_H
 
-static void RunAllTests(void)
-{
-    RUN_TEST_GROUP(LedDriver);
-    RUN_TEST_GROUP(CircularBuffer);
-}
+void CircularBuffer_Create(void);
+void CircularBuffer_Destroy(void);
 
-int main(int ac, char* av[])
-{
-    return UnityMain(ac, av, RunAllTests);
-}
+#endif  /* D_CircularBuffer_H */

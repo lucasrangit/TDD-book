@@ -26,13 +26,7 @@
 
 #include "unity_fixture.h"
 
-static void RunAllTests(void)
+TEST_GROUP_RUNNER(CircularBuffer)
 {
-    RUN_TEST_GROUP(LedDriver);
-    RUN_TEST_GROUP(CircularBuffer);
-}
-
-int main(int ac, char* av[])
-{
-    return UnityMain(ac, av, RunAllTests);
+    RUN_TEST_CASE(CircularBuffer, StartHere);
 }
