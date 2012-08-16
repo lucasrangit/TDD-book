@@ -1,0 +1,9 @@
+CircularBuffer Test List
+
+ * FIFO
+ * Store int
+
+ * Start test-driving the CircularBuffer. 
+ * Choose tests that check the initial state and explore its interface. 
+ * Only choose tests that can pass with hard-coded return results. 
+ * You will get a chance to finish it after the next chapter.
