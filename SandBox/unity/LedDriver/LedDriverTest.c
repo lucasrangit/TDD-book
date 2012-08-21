@@ -27,7 +27,6 @@
 #include "unity_fixture.h"
 #include "LedDriver.h"
 
-#include "unity_fixture.h"
 
 TEST_GROUP(LedDriver);
 
