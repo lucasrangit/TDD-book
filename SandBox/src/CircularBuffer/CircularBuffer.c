@@ -28,12 +28,37 @@
 #include <stdlib.h>
 #include <memory.h>
 
+
 void CircularBuffer_Create(void)
 {
+
 }
 
 void CircularBuffer_Destroy(void)
 {
 }
 
+bool CircularBuffer_IsEmpty(void)
+{
+	return true;
+}
 
+bool CircularBuffer_IsFull(void)
+{
+	return false;
+}
+
+bool CircularBuffer_Insert(int insert)
+{
+	return true;
+}
+
+bool CircularBuffer_Delete(int *remove)
+{
+	return false;
+}
+
+int CircularBuffer_Size(void)
+{
+	return 10;
+}

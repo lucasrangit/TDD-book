@@ -36,8 +36,56 @@ TEST_GROUP(CircularBuffer)
     }
 };
 
-TEST(CircularBuffer, Create)
+TEST(CircularBuffer, CreateIsEmpty)
 {
-  FAIL("Start here");
+	// Create() CircularBuffer is called from setup()
+	// check that it's empty
+	CHECK_TRUE(CircularBuffer_IsEmpty());
+	CHECK_FALSE(CircularBuffer_IsFull());
 }
 
+TEST(CircularBuffer, DestroyIsEmpty)
+{
+	// Destroy() CircularBuffer is called from teardown()
+	CHECK_TRUE(CircularBuffer_IsEmpty());
+	CHECK_FALSE(CircularBuffer_IsFull());
+}
+
+TEST(CircularBuffer, InsertIfEmpty)
+{
+	CHECK_TRUE(CircularBuffer_Insert(1));
+}
+
+TEST(CircularBuffer, InsertIfFull)
+{
+	for (int i = 0; i < 10; ++i)
+		CHECK_TRUE(CircularBuffer_Insert(i));
+	//CHECK_FALSE(CircularBuffer_Insert(10));
+}
+
+TEST(CircularBuffer, DeleteIfNotEmpty)
+{
+	//CHECK_TRUE(CircularBuffer_Delete(NULL));
+}
+
+TEST(CircularBuffer, DeleteIfEmpty)
+{
+	CHECK_FALSE(CircularBuffer_Delete(NULL));
+}
+
+TEST(CircularBuffer, IntialSizeEmpty)
+{
+	//CHECK_EQUAL(0, CircularBuffer_Size());
+}
+
+TEST(CircularBuffer, InsertOneSizeOne)
+{
+	CHECK_TRUE(CircularBuffer_Insert(1));
+	//CHECK_EQUAL(1, CircularBuffer_Size());
+}
+ TEST(CircularBuffer, FullSize)
+ {
+	 for (int i = 0; i < 10; ++i)
+		 CircularBuffer_Insert(i);
+	 CHECK_EQUAL(10, CircularBuffer_Size());
+ }

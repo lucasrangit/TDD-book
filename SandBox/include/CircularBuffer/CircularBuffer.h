@@ -27,7 +27,14 @@
 #ifndef D_CircularBuffer_H
 #define D_CircularBuffer_H
 
+#include <stdbool.h>
+
 void CircularBuffer_Create(void);
 void CircularBuffer_Destroy(void);
+bool CircularBuffer_IsEmpty(void);
+bool CircularBuffer_IsFull(void);
+bool CircularBuffer_Insert(int);
+bool CircularBuffer_Delete(int *);
+int  CircularBuffer_Size(void);
 
 #endif  /* D_CircularBuffer_H */
