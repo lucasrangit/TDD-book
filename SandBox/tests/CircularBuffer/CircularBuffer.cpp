@@ -15,7 +15,7 @@
 //-                                                                   
 //-    www.renaissancesoftware.net james@renaissancesoftware.net      
 //- ------------------------------------------------------------------
-
+#include <stdio.h>
 extern "C"
 {
 #include "CircularBuffer.h"
@@ -23,11 +23,13 @@ extern "C"
 
 #include "CppUTest/TestHarness.h"
 
+enum { CIRCULAR_BUFFER_DIM = 10 };
+
 TEST_GROUP(CircularBuffer)
 {
     void setup()
     {
-      CircularBuffer_Create();
+      CircularBuffer_Create(CIRCULAR_BUFFER_DIM);
     }
 
     void teardown()
@@ -38,54 +40,81 @@ TEST_GROUP(CircularBuffer)
 
 TEST(CircularBuffer, CreateIsEmpty)
 {
-	// Create() CircularBuffer is called from setup()
-	// check that it's empty
 	CHECK_TRUE(CircularBuffer_IsEmpty());
 	CHECK_FALSE(CircularBuffer_IsFull());
+	CHECK_EQUAL(0, CircularBuffer_Size());
+}
+
+TEST(CircularBuffer, QueueOneSizeOne)
+{
+	CHECK_EQUAL(0, CircularBuffer_Size());
+	CHECK_TRUE(CircularBuffer_Queue(1));
+	CHECK_EQUAL(1, CircularBuffer_Size());
+}
+
+TEST(CircularBuffer, Fill)
+{
+	CHECK_FALSE(CircularBuffer_IsFull());
+	for (int i = 0; !CircularBuffer_IsFull(); ++i)
+		CHECK_TRUE(CircularBuffer_Queue(i));
+	CHECK_TRUE(CircularBuffer_IsFull());
+}
+
+IGNORE_TEST(CircularBuffer, CannotOverflow)
+{
+	// @TODO to test this need to pad buffer with start and end flag
+	//       and check them for overflow after writes
+}
+
+TEST(CircularBuffer, QueueFull)
+{
+	for (int i = 0; !CircularBuffer_IsFull(); ++i)
+		CHECK_TRUE(CircularBuffer_Queue(i));
+	CHECK_FALSE(CircularBuffer_Queue(1));
 }
 
 TEST(CircularBuffer, DestroyIsEmpty)
 {
-	// Destroy() CircularBuffer is called from teardown()
+	CHECK_TRUE(CircularBuffer_Queue(1));
+	CHECK_FALSE(CircularBuffer_IsEmpty());
+	CircularBuffer_Destroy();
 	CHECK_TRUE(CircularBuffer_IsEmpty());
-	CHECK_FALSE(CircularBuffer_IsFull());
+	CHECK_EQUAL(0, CircularBuffer_Size());
 }
 
-TEST(CircularBuffer, InsertIfEmpty)
+TEST(CircularBuffer, DequeueIfNotEmpty)
 {
-	CHECK_TRUE(CircularBuffer_Insert(1));
+	CHECK_TRUE(CircularBuffer_Queue(1));
+	CHECK_TRUE(CircularBuffer_Dequeue(NULL));
 }
 
-TEST(CircularBuffer, InsertIfFull)
+TEST(CircularBuffer, QueueDequeueOne)
 {
-	for (int i = 0; i < 10; ++i)
-		CHECK_TRUE(CircularBuffer_Insert(i));
-	//CHECK_FALSE(CircularBuffer_Insert(10));
+	int test_value = 1;
+	CHECK_TRUE(CircularBuffer_Queue(test_value));
+	test_value = -1;
+	CHECK_TRUE(CircularBuffer_Dequeue(&test_value));
+	CHECK_EQUAL(1, test_value);
 }
 
-TEST(CircularBuffer, DeleteIfNotEmpty)
+TEST(CircularBuffer, QueueDequeueFill)
 {
-	//CHECK_TRUE(CircularBuffer_Delete(NULL));
+	int test_value = -1;
+
+	// fill with test pattern
+	for (int i = 0; !CircularBuffer_IsFull(); ++i)
+			CHECK_TRUE(CircularBuffer_Queue(i));
+
+	// read back
+	for (int i = 0; !CircularBuffer_IsEmpty(); ++i)
+	{
+		test_value = -1;
+		CHECK_TRUE(CircularBuffer_Dequeue(&test_value));
+		CHECK_EQUAL(i, test_value);
+	}
 }
 
-TEST(CircularBuffer, DeleteIfEmpty)
+TEST(CircularBuffer, DequeueIfEmpty)
 {
-	CHECK_FALSE(CircularBuffer_Delete(NULL));
+	CHECK_FALSE(CircularBuffer_Dequeue(NULL));
 }
-
-TEST(CircularBuffer, IntialSizeEmpty)
-{
-	//CHECK_EQUAL(0, CircularBuffer_Size());
-}
-
-TEST(CircularBuffer, InsertOneSizeOne)
-{
-	CHECK_TRUE(CircularBuffer_Insert(1));
-	//CHECK_EQUAL(1, CircularBuffer_Size());
-}
- TEST(CircularBuffer, FullSize)
- {
-	 for (int i = 0; i < 10; ++i)
-		 CircularBuffer_Insert(i);
-	 CHECK_EQUAL(10, CircularBuffer_Size());
- }

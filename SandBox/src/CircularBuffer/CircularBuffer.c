@@ -27,38 +27,94 @@
 #include "CircularBuffer.h"
 #include <stdlib.h>
 #include <memory.h>
+#include <stdbool.h>
+#include <stdio.h>
 
+static bool isEmpty 	= true;
+static bool isFull 		= false;
+static int *buffer 		= 0;
+static int 	dimension 	= 0;
+static int 	count 		= 0;
+static int *write 		= 0; // pointer to next free slot
+static int *read 		= 0; // pointer to next unread slot
 
-void CircularBuffer_Create(void)
+void CircularBuffer_Create(int new_dimension)
 {
-
+	dimension	= new_dimension;
+	buffer 		= calloc(dimension, sizeof(int));
+	write 		= buffer;
+	read 		= buffer;
+	count 		= 0;
+	isEmpty 	= true;
+	isFull 		= false;
 }
 
 void CircularBuffer_Destroy(void)
 {
+	if (buffer)
+		free(buffer);
+	buffer 		= 0;
+	dimension 	= 0;
+	count 		= 0;
+	isEmpty 	= true;
+	isFull 		= false;
 }
 
 bool CircularBuffer_IsEmpty(void)
 {
-	return true;
+	return isEmpty;
 }
 
 bool CircularBuffer_IsFull(void)
 {
-	return false;
+	return isFull;
 }
 
-bool CircularBuffer_Insert(int insert)
+bool CircularBuffer_Queue(int insert)
 {
-	return true;
+	bool status = false;
+
+	if (!isFull)
+	{
+		isEmpty = false; // no longer empty
+		*write = insert; // add to queue
+		count++; // increment count
+		if (count == dimension) // full
+		{
+			isFull = true;
+			write = buffer; // wrap around
+		}
+		else
+		{
+			write++; // next open slot
+		}
+		status = true;
+	}
+
+	return status;
 }
 
-bool CircularBuffer_Delete(int *remove)
+bool CircularBuffer_Dequeue(int *readback)
 {
-	return false;
+	bool status = false;
+
+	if (!isEmpty)
+	{
+		printf("%d", *read);
+		// if caller doesn't care about value
+		if (readback)
+			*readback = *read;
+		count--; // decrement count
+		read++; // next in queue
+		if (!count) // empty
+			isEmpty = true;
+		status = true;
+	}
+
+	return status;
 }
 
 int CircularBuffer_Size(void)
 {
-	return 10;
+	return count;
 }

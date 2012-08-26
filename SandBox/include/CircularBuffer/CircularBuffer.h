@@ -29,12 +29,12 @@
 
 #include <stdbool.h>
 
-void CircularBuffer_Create(void);
+void CircularBuffer_Create(int);
 void CircularBuffer_Destroy(void);
 bool CircularBuffer_IsEmpty(void);
 bool CircularBuffer_IsFull(void);
-bool CircularBuffer_Insert(int);
-bool CircularBuffer_Delete(int *);
+bool CircularBuffer_Queue(int);
+bool CircularBuffer_Dequeue(int *);
 int  CircularBuffer_Size(void);
 
 #endif  /* D_CircularBuffer_H */

@@ -1,9 +1,31 @@
-CircularBuffer Test List
+= CircularBuffer Test List =
 
+== Design ==
  * FIFO
+  * fixed size, 10 ints
+  * pointer to start, end
  * Store int
+ 
+== Interface ==
+ * Create() 	- initialize an empty circular buffer
+ * Destroy() 	- delete all memory associated with buffer
+ * IsEmpty() 	- return true if circular buffer is empty or uninitialized 
+ * IsFull() 	- return true if circular buffer is full
+ * Queue()		- write element in the available slot at the tail
+ * Dequeue()	- read first element, return through pointer if not NULL, free slot, return false if it fails
+ * Size()		- return the size of the circular buffer
+ * Print()		- print the contents of the circular buffer
 
- * Start test-driving the CircularBuffer. 
+== Test List ==
+ 1. is empty after being initialized
+ 1. write 1 element makes it not empty
+ 1. write 1 then read 1 makes it empty
+ 1. write N elements in empty buffer fills buffer
+ 1. write N+1 elements in empty buffer fails
+ 1. write 1 element after full returns error
+ 1. fill buffer, delete first, insert new (tests wraparound)
+ 1. fail to create 0 dimension buffer
+ 
+== Test Procedure ==
  * Choose tests that check the initial state and explore its interface. 
  * Only choose tests that can pass with hard-coded return results. 
- * You will get a chance to finish it after the next chapter.
