@@ -25,6 +25,7 @@
  1. write 1 element after full returns error
  1. fill buffer, delete first, insert new (tests wraparound)
  1. fail to create 0 dimension buffer
+ 1. create a zero length buffer
  
 == Test Procedure ==
  * Choose tests that check the initial state and explore its interface. 
