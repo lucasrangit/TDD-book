@@ -57,7 +57,7 @@ TEST(CircularBuffer, Fill)
 	CHECK_FALSE(CircularBuffer_IsFull());
 	for (int i = 0; !CircularBuffer_IsFull(); ++i)
 		CHECK_TRUE(CircularBuffer_Queue(i));
-	CHECK_TRUE(CircularBuffer_IsFull());
+	CHECK_EQUAL(CIRCULAR_BUFFER_DIM, CircularBuffer_Size());
 }
 
 IGNORE_TEST(CircularBuffer, CannotOverflow)
@@ -97,7 +97,7 @@ TEST(CircularBuffer, QueueDequeueOne)
 	CHECK_EQUAL(1, test_value);
 }
 
-TEST(CircularBuffer, QueueDequeueFill)
+TEST(CircularBuffer, QueueDequeueAll)
 {
 	int test_value = -1;
 
@@ -117,4 +117,45 @@ TEST(CircularBuffer, QueueDequeueFill)
 TEST(CircularBuffer, DequeueIfEmpty)
 {
 	CHECK_FALSE(CircularBuffer_Dequeue(NULL));
+}
+
+TEST(CircularBuffer, CannotQueueIfFull)
+{
+	int test_value = 0;
+
+	// fill
+	for (test_value = 0; !CircularBuffer_IsFull(); ++test_value)
+		CHECK_TRUE(CircularBuffer_Queue(test_value));
+
+	// verify cannot queue new values
+	CHECK_FALSE(CircularBuffer_Queue(test_value));
+}
+
+TEST(CircularBuffer, QueueWrapAround)
+{
+	int test_value = 0;
+
+	// fill
+	for (test_value = 0; !CircularBuffer_IsFull(); ++test_value)
+		CHECK_TRUE(CircularBuffer_Queue(test_value));
+
+	// free a slot
+	CHECK_TRUE(CircularBuffer_Dequeue(NULL));
+	// queue new value
+	CHECK_TRUE(CircularBuffer_Queue(test_value));
+
+	// verify correct values are read back
+	for (int i = 1; !CircularBuffer_IsEmpty(); ++i)
+	{
+		test_value = -1;
+		CHECK_TRUE(CircularBuffer_Dequeue(&test_value));
+		CHECK_EQUAL(i, test_value);
+	}
+}
+
+IGNORE_TEST(CircularBuffer, Print)
+{
+	for (int i = 0; !CircularBuffer_IsFull(); ++i)
+		CHECK_TRUE(CircularBuffer_Queue(i));
+	CircularBuffer_Print();
 }

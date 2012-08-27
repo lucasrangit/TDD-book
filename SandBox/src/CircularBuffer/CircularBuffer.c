@@ -32,7 +32,8 @@
 
 static bool isEmpty 	= true;
 static bool isFull 		= false;
-static int *buffer 		= 0;
+static int *buffer 		= 0; // pointer to start
+static int *buffer_end	= 0; // pointer to end
 static int 	dimension 	= 0;
 static int 	count 		= 0;
 static int *write 		= 0; // pointer to next free slot
@@ -42,6 +43,7 @@ void CircularBuffer_Create(int new_dimension)
 {
 	dimension	= new_dimension;
 	buffer 		= calloc(dimension, sizeof(int));
+	buffer_end  = buffer + (dimension - 1);
 	write 		= buffer;
 	read 		= buffer;
 	count 		= 0;
@@ -79,7 +81,7 @@ bool CircularBuffer_Queue(int insert)
 		isEmpty = false; // no longer empty
 		*write = insert; // add to queue
 		count++; // increment count
-		if (count == dimension) // full
+		if (write == buffer_end) // last slot
 		{
 			isFull = true;
 			write = buffer; // wrap around
@@ -100,12 +102,14 @@ bool CircularBuffer_Dequeue(int *readback)
 
 	if (!isEmpty)
 	{
-		printf("%d", *read);
-		// if caller doesn't care about value
-		if (readback)
+		if (readback) // caller wants the current value
 			*readback = *read;
+		if (read == buffer_end)
+			read = buffer;
+		else
+			read++; // next in queue
+		isFull = false; // no longer full
 		count--; // decrement count
-		read++; // next in queue
 		if (!count) // empty
 			isEmpty = true;
 		status = true;
@@ -117,4 +121,22 @@ bool CircularBuffer_Dequeue(int *readback)
 int CircularBuffer_Size(void)
 {
 	return count;
+}
+
+void CircularBuffer_Print(void)
+{
+	int index = 0;
+	int *peek = read;
+
+	printf("buffer = %p read = %p write %p ", buffer, read, write);
+	printf("FIFO: ");
+	for (index = 0; index < count; ++index)
+	{
+		printf("%d ", *peek);
+		if (peek == buffer_end)
+			peek = buffer;
+		else
+			peek++;
+	}
+	printf("\n");
 }

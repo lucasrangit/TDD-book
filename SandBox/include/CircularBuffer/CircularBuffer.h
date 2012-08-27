@@ -36,5 +36,6 @@ bool CircularBuffer_IsFull(void);
 bool CircularBuffer_Queue(int);
 bool CircularBuffer_Dequeue(int *);
 int  CircularBuffer_Size(void);
+void CircularBuffer_Print(void);
 
 #endif  /* D_CircularBuffer_H */
