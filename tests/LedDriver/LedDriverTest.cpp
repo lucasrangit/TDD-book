@@ -95,21 +95,21 @@ TEST_GROUP(LedDriver)
 TEST_GROUP(LedDriver)
 {
     uint16_t virtualLeds; // @todo make static?
-    BOOL activeHighLeds;
+    BOOL ledsActiveHigh;
 
     void virtualLeds_Set(uint16_t value)
     {
-    	virtualLeds = value;
+    	virtualLeds = TRUE == ledsActiveHigh ? value : ~value;
     }
     uint16_t virtualLeds_Get()
     {
-    	return virtualLeds;
+    	return (TRUE == ledsActiveHigh ? virtualLeds : ~virtualLeds);
     }
 
     void setup()
     {
-    	activeHighLeds = TRUE;
-        LedDriver_Create(&virtualLeds, activeHighLeds);
+    	ledsActiveHigh = TRUE;
+        LedDriver_Create(&virtualLeds, ledsActiveHigh);
     }
     void teardown()
     {
@@ -123,7 +123,7 @@ TEST_GROUP(LedDriver)
 TEST(LedDriver, LedsAreOffAfterCreate)
 {
 	virtualLeds_Set( 0xffff);
-    LedDriver_Create(&virtualLeds, activeHighLeds);
+    LedDriver_Create(&virtualLeds, ledsActiveHigh);
     LONGS_EQUAL(0, virtualLeds_Get());
 }
 //END: LedsAreOffAfterInitialization
