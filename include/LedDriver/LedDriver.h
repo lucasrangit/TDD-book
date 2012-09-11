@@ -34,7 +34,7 @@
 typedef int BOOL;
 
 
-void LedDriver_Create(uint16_t * ledsAddress);
+void LedDriver_Create(uint16_t * ledsAddress, BOOL activeHigh);
 void LedDriver_Destroy(void);
 
 void LedDriver_TurnOn(int ledNumber);

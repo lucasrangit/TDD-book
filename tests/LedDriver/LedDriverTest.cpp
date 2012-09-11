@@ -107,7 +107,7 @@ TEST_GROUP(LedDriver)
 
     void setup()
     {
-        LedDriver_Create(&virtualLeds);
+        LedDriver_Create(&virtualLeds, TRUE);
     }
     void teardown()
     {
@@ -121,7 +121,7 @@ TEST_GROUP(LedDriver)
 TEST(LedDriver, LedsAreOffAfterCreate)
 {
 	virtualLeds_Set( 0xffff);
-    LedDriver_Create(&virtualLeds);
+    LedDriver_Create(&virtualLeds, TRUE);
     LONGS_EQUAL(0, virtualLeds_Get());
 }
 //END: LedsAreOffAfterInitialization
