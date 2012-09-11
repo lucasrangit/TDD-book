@@ -33,12 +33,14 @@ enum {ALL_LEDS_OFF = 0, ALL_LEDS_ON = ~0};
 
 static uint16_t * ledsAddress;
 static uint16_t ledsImage;
+static BOOL ledsActiveHigh;
 
 void LedDriver_Create(uint16_t * address, BOOL activeHigh)
 {
     ledsAddress = address;
     ledsImage = ALL_LEDS_OFF;
-    *ledsAddress = ledsImage;
+    ledsActiveHigh = activeHigh;
+    *ledsAddress = TRUE == ledsActiveHigh ? ledsImage : ~ledsImage;
 }
 
 void LedDriver_Destroy(void)
@@ -64,7 +66,7 @@ static uint16_t convertLedNumberToBit(int ledNumber)
 
 static void updateHardware(void)
 {
-    *ledsAddress = ledsImage;
+    *ledsAddress = TRUE == ledsActiveHigh ? ledsImage : ~ledsImage;
 }
 
 static void setLedImageBit(int ledNumber)

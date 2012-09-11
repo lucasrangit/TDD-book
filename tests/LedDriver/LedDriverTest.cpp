@@ -94,7 +94,8 @@ TEST_GROUP(LedDriver)
 //START: RevisedTestGroupPlusCreate
 TEST_GROUP(LedDriver)
 {
-    uint16_t virtualLeds; // @todo how to make static?
+    uint16_t virtualLeds; // @todo make static?
+    BOOL activeHighLeds;
 
     void virtualLeds_Set(uint16_t value)
     {
@@ -107,7 +108,8 @@ TEST_GROUP(LedDriver)
 
     void setup()
     {
-        LedDriver_Create(&virtualLeds, TRUE);
+    	activeHighLeds = TRUE;
+        LedDriver_Create(&virtualLeds, activeHighLeds);
     }
     void teardown()
     {
@@ -121,7 +123,7 @@ TEST_GROUP(LedDriver)
 TEST(LedDriver, LedsAreOffAfterCreate)
 {
 	virtualLeds_Set( 0xffff);
-    LedDriver_Create(&virtualLeds, TRUE);
+    LedDriver_Create(&virtualLeds, activeHighLeds);
     LONGS_EQUAL(0, virtualLeds_Get());
 }
 //END: LedsAreOffAfterInitialization
