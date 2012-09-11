@@ -94,7 +94,16 @@ TEST_GROUP(LedDriver)
 //START: RevisedTestGroupPlusCreate
 TEST_GROUP(LedDriver)
 {
-    uint16_t virtualLeds;
+    uint16_t virtualLeds; // @todo how to make static?
+
+    void virtualLeds_Set(uint16_t value)
+    {
+    	virtualLeds = value;
+    }
+    uint16_t virtualLeds_Get()
+    {
+    	return virtualLeds;
+    }
 
     void setup()
     {
@@ -111,9 +120,9 @@ TEST_GROUP(LedDriver)
 //START: LedsAreOffAfterInitialization
 TEST(LedDriver, LedsAreOffAfterCreate)
 {
-    virtualLeds = 0xffff;
+	virtualLeds_Set( 0xffff);
     LedDriver_Create(&virtualLeds);
-    LONGS_EQUAL(0, virtualLeds);
+    LONGS_EQUAL(0, virtualLeds_Get());
 }
 //END: LedsAreOffAfterInitialization
 
@@ -121,7 +130,7 @@ TEST(LedDriver, LedsAreOffAfterCreate)
 TEST(LedDriver, TurnOnLedOne)
 {
     LedDriver_TurnOn(1);
-    LONGS_EQUAL(1, virtualLeds);
+    LONGS_EQUAL(1, virtualLeds_Get());
 }
 //END: TurnOnLedZero
 
@@ -130,7 +139,7 @@ TEST(LedDriver, TurnOffLedOne)
 {
     LedDriver_TurnOn(1);
     LedDriver_TurnOff(1);
-    LONGS_EQUAL(0, virtualLeds);
+    LONGS_EQUAL(0, virtualLeds_Get());
 }
 //END: TurnOffLedOne
 //END: FirstThreeTests
@@ -140,7 +149,7 @@ TEST(LedDriver, TurnOnMultipleLeds)
 {
     LedDriver_TurnOn(9);
     LedDriver_TurnOn(8);
-    LONGS_EQUAL(0x180, virtualLeds);
+    LONGS_EQUAL(0x180, virtualLeds_Get());
 }
 //END: TurnOnMultipleLeds
 
@@ -149,16 +158,16 @@ TEST(LedDriver, TurnOffAnyLed)
 {
     LedDriver_TurnAllOn();
     LedDriver_TurnOff(8);
-    LONGS_EQUAL(0xff7f, virtualLeds);
+    LONGS_EQUAL(0xff7f, virtualLeds_Get());
 }
 //END: TurnOffAnyLedSecondTry
 
 //START: LedMemoryIsNotReadable
 TEST(LedDriver, LedMemoryIsNotReadable)
 {
-    virtualLeds = 0xffff;
+	virtualLeds_Set( 0xffff);
     LedDriver_TurnOn(8);
-    LONGS_EQUAL(0x80, virtualLeds);
+    LONGS_EQUAL(0x80, virtualLeds_Get());
 }
 //END: LedMemoryIsNotReadable
 
@@ -167,7 +176,7 @@ TEST(LedDriver, UpperAndLowerBounds)
 {
     LedDriver_TurnOn(1);
     LedDriver_TurnOn(16);
-    LONGS_EQUAL(0x8001, virtualLeds);
+    LONGS_EQUAL(0x8001, virtualLeds_Get());
 }
 //END: UpperAndLowerBounds
 
@@ -179,7 +188,7 @@ TEST(LedDriver, OutOfBoundsTurnOnDoesNoHarm)
     LedDriver_TurnOn(17);
     LedDriver_TurnOn(3141);
 
-    LONGS_EQUAL(0, virtualLeds);
+    LONGS_EQUAL(0, virtualLeds_Get());
 }
 //END: OutOfBoundsTurnOnDoesNoHarm
 
@@ -193,7 +202,7 @@ TEST(LedDriver, OutOfBoundsTurnOffDoesNoHarm)
     LedDriver_TurnOff(17);
     LedDriver_TurnOff(3141);
 
-    LONGS_EQUAL(0xffff, virtualLeds);
+    LONGS_EQUAL(0xffff, virtualLeds_Get());
 }
 //END: OutOfBoundsTurnOffDoesNoHarm
 
@@ -244,7 +253,7 @@ TEST(LedDriver, OutOfBoundsLedsAreAlwaysOff)
 TEST(LedDriver, AllOn)
 {
     LedDriver_TurnAllOn();
-    LONGS_EQUAL(0xffff, virtualLeds);
+    LONGS_EQUAL(0xffff, virtualLeds_Get());
 }
 //END: TurnAllOn
 
@@ -255,7 +264,7 @@ TEST(LedDriver, AllOn)
     CHECK_EQUAL(true, LedDriver_IsOn(1));
     CHECK_EQUAL(true, LedDriver_IsOn(8));
     CHECK_EQUAL(true, LedDriver_IsOn(16));
-    LONGS_EQUAL(0xffff, virtualLeds);
+    LONGS_EQUAL(0xffff, virtualLeds_Get());
 }
 #endif //END: TurnAllOnRevised
 
@@ -265,7 +274,7 @@ TEST(LedDriver, AllOff)
 {
     LedDriver_TurnAllOn();
     LedDriver_TurnAllOff();
-    LONGS_EQUAL(0, virtualLeds);
+    LONGS_EQUAL(0, virtualLeds_Get());
 }
 //END: TurnAllOff
 //END: final
@@ -279,14 +288,14 @@ TEST(LedDriver, TurnOffAnyLed)
     LedDriver_TurnOn(9);
     LedDriver_TurnOn(8);
     LedDriver_TurnOff(8);
-    LONGS_EQUAL(0x100, virtualLeds);
+    LONGS_EQUAL(0x100, virtualLeds_Get());
 }
 //END: TurnOffAnyLedFirstTry
 
 //START: RevisedTestGroupPlusCreate
 TEST(LedDriver, Create)
 {
-    LONGS_EQUAL(0, virtualLeds);
+    LONGS_EQUAL(0, virtualLeds_Get());
 }
 //END: RevisedTestGroupPlusCreate
 //START: OutOfBoundsChangesNothing
@@ -297,23 +306,23 @@ TEST(LedDriver, OutOfBoundsChangesNothing)
     LedDriver_TurnOn(17);
     LedDriver_TurnOn(3141);
 
-    LONGS_EQUAL(0, virtualLeds);
+    LONGS_EQUAL(0, virtualLeds_Get());
 }
 //END: OutOfBoundsChangesNothing
 //START: Led3141
 TEST(LedDriver, OutOfBoundsChangesNothing)
 {
     LedDriver_TurnOn(-1);
-    LONGS_EQUAL(0, virtualLeds);
+    LONGS_EQUAL(0, virtualLeds_Get());
     LedDriver_TurnOn(0);
-    LONGS_EQUAL(0, virtualLeds);
+    LONGS_EQUAL(0, virtualLeds_Get());
     LedDriver_TurnOn(17);
-    LONGS_EQUAL(0, virtualLeds);
+    LONGS_EQUAL(0, virtualLeds_Get());
     LedDriver_TurnOn(33);
-    LONGS_EQUAL(0, virtualLeds);
+    LONGS_EQUAL(0, virtualLeds_Get());
     LedDriver_TurnOn(3141);
 
-    LONGS_EQUAL(0, virtualLeds);
+    LONGS_EQUAL(0, virtualLeds_Get());
 }
 //END: Led3141
 //START: OutOfBoundsTurnOffDoesNoHarm1
@@ -324,7 +333,7 @@ TEST(LedDriver, OutOfBoundsTurnOffDoesNoHarm)
     LedDriver_TurnOff(17);
     LedDriver_TurnOff(3141);
 
-    LONGS_EQUAL(0, virtualLeds);
+    LONGS_EQUAL(0, virtualLeds_Get());
 }
 //END: OutOfBoundsTurnOffDoesNoHarm1
 //START: OutOfBoundsTurnOffDoesNoHarm2
@@ -337,7 +346,7 @@ TEST(LedDriver, OutOfBoundsTurnOffDoesNoHarm)
     LedDriver_TurnOff(17);
     LedDriver_TurnOff(3141);
 
-    LONGS_EQUAL(0xffff, virtualLeds);
+    LONGS_EQUAL(0xffff, virtualLeds_Get());
 }
 //END: OutOfBoundsTurnOffDoesNoHarm2
 
