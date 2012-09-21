@@ -97,13 +97,27 @@ TEST_GROUP(LedDriver)
     uint16_t virtualLeds; // @todo make static?
     BOOL ledsActiveHigh;
 
+    static uint16_t reverse16(uint16_t in)
+    {
+    	uint16_t out = 0;
+    	int i = 16;
+    	if (in)
+    		while (i--)
+    		{
+    			out <<= 1;
+    			out |= in % 2;
+    			in  >>= 1;
+    		}
+    	return out;
+    }
+
     void virtualLeds_Set(uint16_t value)
     {
-    	virtualLeds = TRUE == ledsActiveHigh ? value : ~value;
+    	virtualLeds = reverse16(TRUE == ledsActiveHigh ? value : ~value);
     }
     uint16_t virtualLeds_Get()
     {
-    	return (TRUE == ledsActiveHigh ? virtualLeds : ~virtualLeds);
+    	return reverse16(TRUE == ledsActiveHigh ? virtualLeds : ~virtualLeds);
     }
 
     void setup()

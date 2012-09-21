@@ -28,19 +28,32 @@
 #include "LedDriver.h"
 #include "RuntimeError.h"
 
-
 enum {ALL_LEDS_OFF = 0, ALL_LEDS_ON = ~0};
 
-static uint16_t * ledsAddress;
-static uint16_t ledsImage;
+static uint16_t * ledsAddress; /* hardware address LED 1 is bit 15, 2 is bit 14 */
+static uint16_t ledsImage; /* active high copy of hardware address LED 1 is bit 0 */
 static BOOL ledsActiveHigh;
+
+static uint16_t reverse16(uint16_t in)
+{
+	uint16_t out = 0;
+	int i = 16;
+	if (in)
+		while (i--)
+		{
+			out <<= 1;
+			out |= in % 2;
+			in  >>= 1;
+		}
+	return out;
+}
 
 void LedDriver_Create(uint16_t * address, BOOL activeHigh)
 {
     ledsAddress = address;
     ledsImage = ALL_LEDS_OFF;
     ledsActiveHigh = activeHigh;
-    *ledsAddress = TRUE == ledsActiveHigh ? ledsImage : ~ledsImage;
+    *ledsAddress = reverse16(TRUE == ledsActiveHigh ? ledsImage : ~ledsImage);
 }
 
 void LedDriver_Destroy(void)
@@ -66,7 +79,7 @@ static uint16_t convertLedNumberToBit(int ledNumber)
 
 static void updateHardware(void)
 {
-    *ledsAddress = TRUE == ledsActiveHigh ? ledsImage : ~ledsImage;
+    *ledsAddress = reverse16(TRUE == ledsActiveHigh ? ledsImage : ~ledsImage);
 }
 
 static void setLedImageBit(int ledNumber)
