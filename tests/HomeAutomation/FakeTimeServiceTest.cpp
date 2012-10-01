@@ -52,6 +52,8 @@ TEST(FakeTimeService, SimulateATic)
 {
     TimeService_SetPeriodicAlarmInSeconds(60, TestCallback);
 
+    // don't need to set the date and time to simulate a tick
+    // why "set the day and minute so they are at least valid values"?
     FakeTimeService_SetMinute(42);
     FakeTimeService_SetDay(SUNDAY);
     FakeTimeService_MinuteIsUp();
@@ -66,6 +68,7 @@ TEST(FakeTimeService, Create)
 {
     Time time;
     TimeService_GetTime(&time);
+
     LONGS_EQUAL(TIME_UNKNOWN, time.minuteOfDay);
     LONGS_EQUAL(TIME_UNKNOWN, time.dayOfWeek);
 }
