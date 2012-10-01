@@ -17,6 +17,7 @@ CPP_PLATFORM = Gcc
 SRC_DIRS = \
 	$(PROJECT_HOME_DIR)/src/LedDriver \
 	$(PROJECT_HOME_DIR)/src/CircularBuffer \
+	$(PROJECT_HOME_DIR)/src/AlarmClockService \
 
 TEST_SRC_DIRS = \
 	tests\
@@ -27,6 +28,8 @@ INCLUDE_DIRS =\
   $(CPPUTEST_HOME)/include\
   $(PROJECT_HOME_DIR)/include/LedDriver\
   $(PROJECT_HOME_DIR)/include/CircularBuffer\
+  $(PROJECT_HOME_DIR)/include/AlarmClockService\
+  
   
 #CPPUTEST_WARNINGFLAGS += -pedantic-errors -Wconversion -Wshadow  -Wextra
 CPPUTEST_WARNINGFLAGS += -Wall -Werror -Wswitch-default -Wswitch-enum 

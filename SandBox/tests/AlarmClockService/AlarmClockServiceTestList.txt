@@ -1,0 +1,21 @@
+Specifications
+ * Alarm clock service that keeps a list of time callbacks. 
+ * The timer interrupt will wakeup the time service every 100 milliseconds. 
+ * When a scheduled action is ready to run, call the callback function.
+ * 128 events can be scheduled for any given time
+ 
+Test List
+ * No callbacks defined when initialized
+ * Time is wrong, day is wrong, no callbacks called
+ * Time is wrong, day is right, no callbacks called
+ * Time is right, day is right, callback called
+ * Schedule one-time event
+ * Schedule repeating event
+ * Remove scheduled event
+ * Remove non-scheduled event
+ * Schedule multiple one-time events for the same time
+ * Schedule multiple repeating events for the same time
+ * Schedule a one-time and repeating event for the same time
+ * Schedule the maximum number of scheduled events (128)
+ * Schedule past the maximum of scheduled events
+ 
