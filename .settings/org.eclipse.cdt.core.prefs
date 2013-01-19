@@ -1,3 +1,16 @@
-#Tue Jan 04 16:17:51 CST 2011
 eclipse.preferences.version=1
-environment/project/cdt.managedbuild.toolchain.gnu.macosx.base.1615990891=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<environment append\="true" appendContributed\="true">\n<variable delimiter\=";" name\="CPP_U_TEST" operation\="remove"/>\n<variable delimiter\="\:" name\="UNITY_64BIT_POINTER" operation\="append" value\="Y"/>\n</environment>\n
+environment/project/cdt.managedbuild.toolchain.gnu.macosx.base.1615990891=
+environment/project/cdt.managedbuild.toolchain.gnu.macosx.base.1615990891.1944197697/CPP_U_TEST/delimiter=;
+environment/project/cdt.managedbuild.toolchain.gnu.macosx.base.1615990891.1944197697/CPP_U_TEST/operation=remove
+environment/project/cdt.managedbuild.toolchain.gnu.macosx.base.1615990891.1944197697/UNITY_64BIT_POINTER/delimiter=\:
+environment/project/cdt.managedbuild.toolchain.gnu.macosx.base.1615990891.1944197697/UNITY_64BIT_POINTER/operation=append
+environment/project/cdt.managedbuild.toolchain.gnu.macosx.base.1615990891.1944197697/UNITY_64BIT_POINTER/value=Y
+environment/project/cdt.managedbuild.toolchain.gnu.macosx.base.1615990891.1944197697/append=true
+environment/project/cdt.managedbuild.toolchain.gnu.macosx.base.1615990891.1944197697/appendContributed=true
+environment/project/cdt.managedbuild.toolchain.gnu.macosx.base.1615990891/CPP_U_TEST/delimiter=;
+environment/project/cdt.managedbuild.toolchain.gnu.macosx.base.1615990891/CPP_U_TEST/operation=remove
+environment/project/cdt.managedbuild.toolchain.gnu.macosx.base.1615990891/UNITY_64BIT_POINTER/delimiter=\:
+environment/project/cdt.managedbuild.toolchain.gnu.macosx.base.1615990891/UNITY_64BIT_POINTER/operation=append
+environment/project/cdt.managedbuild.toolchain.gnu.macosx.base.1615990891/UNITY_64BIT_POINTER/value=Y
+environment/project/cdt.managedbuild.toolchain.gnu.macosx.base.1615990891/append=true
+environment/project/cdt.managedbuild.toolchain.gnu.macosx.base.1615990891/appendContributed=true
