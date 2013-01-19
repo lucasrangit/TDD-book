@@ -2,3 +2,5 @@
 lib
 obj
 /objs
+*.d
+*_tests
